@@ -2,18 +2,17 @@ package org.example.jsga.operators;
 
 import org.example.jsga.model.Individual;
 import org.example.jsga.model.Population;
+import org.example.jsga.util.RandomUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Performs selection based on Baker's stochastic universal sampling algorithm.
  */
 public class SelectionOperator {
 
-    private final Random random = new Random();
     private final double worstFitness;
 
     public SelectionOperator(double worstFitness) {
@@ -37,7 +36,7 @@ public class SelectionOperator {
         double factor = popSize / (worstFitness * validCount - sum);
 
         List<Integer> sampleIndices = new ArrayList<>();
-        double ptr = random.nextDouble();
+        double ptr = RandomUtils.rand();
         double acc = 0;
 
         for (int i = 0; i < popSize; i++) {
@@ -55,7 +54,7 @@ public class SelectionOperator {
         }
 
         // Shuffle selected indices
-        Collections.shuffle(sampleIndices, random);
+        Collections.shuffle(sampleIndices, RandomUtils.getInstance());
 
         // Copy selected individuals to new population
         for (int i = 0; i < popSize; i++) {
@@ -68,5 +67,3 @@ public class SelectionOperator {
         }
     }
 }
-
-// NOTE: Assumes Individual has clone(), getFitness(), setFitness(), and gene methods.

@@ -1,7 +1,7 @@
 package org.example.jsga.util;
 
 /**
- * Utility methods for encoding data into packed genotype form.
+ * Utility methods for encoding and decoding genotype forms including Gray code.
  */
 public class EncodeUtils {
 
@@ -22,12 +22,23 @@ public class EncodeUtils {
      */
     public static boolean[] binaryToGray(boolean[] binary) {
         boolean[] gray = new boolean[binary.length];
-        boolean last = false;
-        for (int i = 0; i < binary.length; i++) {
-            gray[i] = binary[i] != last;
-            last = binary[i];
+        gray[0] = binary[0];
+        for (int i = 1; i < binary.length; i++) {
+            gray[i] = binary[i - 1] ^ binary[i];
         }
         return gray;
+    }
+
+    /**
+     * Converts Gray code to binary.
+     */
+    public static boolean[] grayToBinary(boolean[] gray) {
+        boolean[] binary = new boolean[gray.length];
+        binary[0] = gray[0];
+        for (int i = 1; i < gray.length; i++) {
+            binary[i] = binary[i - 1] ^ gray[i];
+        }
+        return binary;
     }
 
     /**
@@ -58,5 +69,16 @@ public class EncodeUtils {
         }
 
         return packed;
+    }
+
+    /**
+     * Converts a boolean array to an integer (LSB first).
+     */
+    public static int binaryToInt(boolean[] binary) {
+        int value = 0;
+        for (int i = binary.length - 1; i >= 0; i--) {
+            value = (value << 1) | (binary[i] ? 1 : 0);
+        }
+        return value;
     }
 }

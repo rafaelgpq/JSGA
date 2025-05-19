@@ -2,8 +2,7 @@ package org.example.jsga.operators;
 
 import org.example.jsga.model.Individual;
 import org.example.jsga.model.Population;
-
-import java.util.Random;
+import org.example.jsga.util.RandomUtils;
 
 /**
  * Performs two-point crossover between pairs of individuals.
@@ -13,7 +12,6 @@ public class CrossoverOperator {
     private final double crossoverRate;
     private final int populationSize;
     private final int chromosomeLength;
-    private final Random random = new Random();
 
     public CrossoverOperator(double crossoverRate, int populationSize, int chromosomeLength) {
         this.crossoverRate = crossoverRate;
@@ -31,8 +29,8 @@ public class CrossoverOperator {
             byte[] gene1 = mom.getGene();
             byte[] gene2 = dad.getGene();
 
-            int x1 = random.nextInt(chromosomeLength);
-            int x2 = random.nextInt(chromosomeLength);
+            int x1 = RandomUtils.randint(chromosomeLength);
+            int x2 = RandomUtils.randint(chromosomeLength);
             if (x1 == x2) x2 = (x2 + 1) % chromosomeLength;
             if (x1 > x2) {
                 int temp = x1;

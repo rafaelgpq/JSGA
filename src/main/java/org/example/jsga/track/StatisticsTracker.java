@@ -1,4 +1,4 @@
-package org.example.jsga.operators;
+package org.example.jsga.track;
 
 import org.example.jsga.model.Individual;
 

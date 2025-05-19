@@ -9,7 +9,8 @@ public class RandomUtils {
 
     private static Random globalRandom = new Random();
 
-    public static void setSeed(long seed) {
+    // Called by MainSimulator to seed the RNG
+    public static void initialize(long seed) {
         globalRandom = new Random(seed);
     }
 

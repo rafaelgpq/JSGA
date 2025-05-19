@@ -2,8 +2,7 @@ package org.example.jsga.operators;
 
 import org.example.jsga.model.Individual;
 import org.example.jsga.model.Population;
-
-import java.util.Random;
+import org.example.jsga.util.RandomUtils;
 
 /**
  * Performs mutation on a given population using a bitwise mutation strategy.
@@ -16,8 +15,6 @@ public class MutationOperator {
     private final int populationSize;
     private long muNext = 0;
     private boolean firstCall = true;
-
-    private final Random random = new Random();
 
     public MutationOperator(double mutationRate, int chromosomeLength, int populationSize) {
         this.mutationRate = mutationRate;
@@ -46,7 +43,7 @@ public class MutationOperator {
             if (mutationRate < 1.0) {
                 double r;
                 do {
-                    r = random.nextDouble();
+                    r = RandomUtils.rand();
                 } while (r == 0.0);
 
                 muNext += (long) Math.ceil(Math.log(r) / Math.log(1.0 - mutationRate));

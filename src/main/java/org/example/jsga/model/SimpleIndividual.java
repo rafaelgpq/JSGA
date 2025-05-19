@@ -67,4 +67,19 @@ public class SimpleIndividual implements Individual {
         copy.setNeedsEvaluation(this.needsEvaluation);
         return copy;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        int totalBits = 0;
+        for (byte b : gene) {
+            for (int i = 0; i < 8 && totalBits < geneLength; i++) {
+                sb.append((b >> i & 1) == 1 ? '1' : '0');
+                totalBits++;
+            }
+        }
+        return "[RGP][SimpleIndividual][toString()] chromosome: |" + sb + "| geneLength=" + geneLength;
+    }
+
+
 }

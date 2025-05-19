@@ -2,11 +2,11 @@ package org.example.jsga.operators;
 
 import org.example.jsga.model.Individual;
 import org.example.jsga.model.Population;
+import org.example.jsga.util.RandomUtils;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Random;
 
 /**
  * Implements Dynamic Parameter Encoding (DPE) logic.
@@ -23,7 +23,6 @@ public class DPEngine {
     private final int popSize;
     private final String dpeLogFile;
 
-    private final Random rand = new Random();
     private int lastZoom = 0;
 
     public DPEngine(int[] gaPosn, double[] gaFact, double[] gaBase, double[] dpeHist,
@@ -61,11 +60,11 @@ public class DPEngine {
                 if ((gene[focus2] & (1 << bit2)) == 0) two++;
             }
 
-            dpeHist[2*j] = dpeHist[2*j] * (1.0 - 1.0 / dpeFreq) + one / (double)dpeFreq;
-            dpeHist[2*j+1] = dpeHist[2*j+1] * (1.0 - 1.0 / dpeFreq) + two / (double)dpeFreq;
+            dpeHist[2 * j] = dpeHist[2 * j] * (1.0 - 1.0 / dpeFreq) + one / (double) dpeFreq;
+            dpeHist[2 * j + 1] = dpeHist[2 * j + 1] * (1.0 - 1.0 / dpeFreq) + two / (double) dpeFreq;
 
-            one = (int) dpeHist[2*j];
-            two = (int) dpeHist[2*j+1];
+            one = (int) dpeHist[2 * j];
+            two = (int) dpeHist[2 * j + 1];
 
             int zoom = 0;
             if (one < fewThreshold) zoom = 1;
@@ -85,7 +84,7 @@ public class DPEngine {
 
             if (zoom > 0) {
                 lastZoom = generation;
-                dpeHist[2*j] = dpeHist[2*j+1] = popSize / 2.0;
+                dpeHist[2 * j] = dpeHist[2 * j + 1] = popSize / 2.0;
                 range /= 2.0;
                 gaFact[j] /= 2.0;
                 gaBase[j] += (zoom - 1) * (range / 2.0);
@@ -108,7 +107,7 @@ public class DPEngine {
                     gene[focus] &= ~(1 << bitTail);
                     gene[focus] |= twoBits & (1 << bitTail);
 
-                    if (rand.nextDouble() < 0.5) gene[focus] ^= (1 << bitTail);
+                    if (RandomUtils.rand() < 0.5) gene[focus] ^= (1 << bitTail);
                     ind.setNeedsEvaluation(true);
                 }
 
@@ -120,4 +119,3 @@ public class DPEngine {
         }
     }
 }
-

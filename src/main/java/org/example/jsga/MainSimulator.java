@@ -1,14 +1,18 @@
 package org.example.jsga;
 
+import org.example.jsga.config.Constants;
+import org.example.jsga.config.FlagConfigurator;
 import org.example.jsga.core.DoneChecker;
 import org.example.jsga.init.Initializer;
 import org.example.jsga.measure.MeasureEngine;
-import org.example.jsga.model.Individual;
 import org.example.jsga.model.Population;
 import org.example.jsga.model.PopulationFactory;
 import org.example.jsga.operators.*;
 import org.example.jsga.track.BestSetManager;
-import org.example.jsga.util.ErrorHandler;
+import org.example.jsga.util.DebugUtils;
+import org.example.jsga.util.InputPrinter;
+import org.example.jsga.util.RandomUtils;
+import org.example.jsga.track.impl.DummyStats;
 
 /**
  * Simulates the main Genetic Algorithm loop.
@@ -18,31 +22,41 @@ public class MainSimulator {
     public static void main(String[] args) {
         try {
             // === Setup Phase ===
-            int popSize = 50;
-            int geneLength = 32;
-            int maxGenerations = 100;
+            FlagConfigurator config = new FlagConfigurator("jsga.properties");
+            InputPrinter.printConfiguration(config);
+
+            int popSize = config.getInt("population.size", Constants.DEFAULT_POPSIZE);
+            int geneLength = config.getInt("gene.length", Constants.DEFAULT_LENGTH);
+            int maxGenerations = config.getInt("max.generations", 1000);
+            double mutationRate = config.getDouble("mutation.rate", Constants.DEFAULT_MUTATION_RATE);
+            double crossoverRate = config.getDouble("crossover.rate", Constants.DEFAULT_CROSSOVER_RATE);
+            boolean elitism = config.getBoolean("elitism.enabled", true);
+            long seed = config.getLong("seed", Constants.DEFAULT_SEED);
+            RandomUtils.initialize(seed);
 
             Population population = PopulationFactory.create(popSize, geneLength);
-            Initializer initializer = new Initializer(System.currentTimeMillis());
+            Initializer initializer = new Initializer(seed);
             initializer.initialize(population);
 
-            MutationOperator mutation = new MutationOperator(0.01, geneLength, popSize);
-            CrossoverOperator crossover = new CrossoverOperator(0.7, popSize, geneLength);
+            MutationOperator mutation = new MutationOperator(
+                    mutationRate, geneLength, popSize);
+            CrossoverOperator crossover = new CrossoverOperator(
+                    crossoverRate, popSize, geneLength);
             SelectionOperator selection = new SelectionOperator(1.0);
-            ElitistOperator elitist = new ElitistOperator();
+            ElitistOperator elitistOperator = new ElitistOperator();
             EvaluationOperator evaluator = new EvaluationOperator(
-                    gene -> countOnes(gene),  // Simple fitness function: maximize 1s
+                    gene -> countOnes(gene),
                     new DummyStats()
             );
 
             GeneticOperatorsImpl operators = new GeneticOperatorsImpl(
-                    selection, mutation, crossover, elitist, evaluator,
+                    selection, mutation, crossover, elitistOperator, evaluator,
                     true, true, false, 0, 0
             );
 
             BestSetManager bestSet = new BestSetManager(5, false);
             MeasureEngine measure = new MeasureEngine(-1.0, 0, true, true, true);
-            DoneChecker doneChecker = new DoneChecker(10, 5000, false);
+            DoneChecker doneChecker = new DoneChecker(10, maxGenerations, false);
 
             Population nextGen = PopulationFactory.create(popSize, geneLength);
 
@@ -68,6 +82,8 @@ public class MainSimulator {
                     operators.elitist(population, nextGen);
                 }
 
+                DebugUtils.printPopulation(population, generation);
+
                 Population temp = population;
                 population = nextGen;
                 nextGen = temp;
@@ -86,17 +102,5 @@ public class MainSimulator {
             }
         }
         return -count; // minimize negative = maximize ones
-    }
-
-    private static class DummyStats implements StatisticsTracker {
-        public void incrementTrials() {}
-        public void updateBest(double f) {}
-        public double getBest() { return 0; }
-        public void accumulateOnSum(double f) {}
-        public void accumulateOffSum(double b) {}
-        public boolean shouldSaveBest() { return false; }
-        public void saveBest(Individual i) {}
-        public boolean shouldDump() { return false; }
-        public void dumpCheckpoint() {}
     }
 }

@@ -2,6 +2,7 @@ package org.example.jsga.operators;
 
 import org.example.jsga.model.Individual;
 import org.example.jsga.model.Population;
+import org.example.jsga.track.StatisticsTracker;
 
 /**
  * Evaluates fitness of individuals using a user-defined fitness function.
