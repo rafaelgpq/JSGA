@@ -8,13 +8,17 @@ import java.util.Arrays;
 public class SimpleIndividual implements Individual {
 
     private byte[] gene;
-    private final int geneLength;
+    private int geneLength;
     private double fitness = 0.0;
     private boolean needsEvaluation = true;
 
     public SimpleIndividual(byte[] gene, int geneLength) {
         this.gene = gene;
         this.geneLength = geneLength;
+    }
+
+    public SimpleIndividual() {
+        this(new byte[0], 0);
     }
 
     @Override
@@ -50,6 +54,10 @@ public class SimpleIndividual implements Individual {
     @Override
     public int getGeneLength() {
         return geneLength;
+    }
+
+    public void setGeneLength(int length) {
+        this.geneLength = length;
     }
 
     @Override

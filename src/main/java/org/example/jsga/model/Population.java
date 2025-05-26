@@ -11,4 +11,5 @@ public interface Population {
     void markAllForEvaluation();
     void swapWith(Population other);
     List<Individual> getAll();
+    void setIndividuals(List<Individual> individuals);
 }

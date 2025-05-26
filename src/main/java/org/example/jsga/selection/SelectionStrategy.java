@@ -1,4 +1,4 @@
-package org.example.jsga.operators;
+package org.example.jsga.selection;
 
 import org.example.jsga.model.Individual;
 import org.example.jsga.model.Population;
@@ -11,11 +11,11 @@ import java.util.List;
 /**
  * Performs selection based on Baker's stochastic universal sampling algorithm.
  */
-public class SelectionOperator {
+public class SelectionStrategy {
 
     private final double worstFitness;
 
-    public SelectionOperator(double worstFitness) {
+    public SelectionStrategy(double worstFitness) {
         this.worstFitness = worstFitness;
     }
 

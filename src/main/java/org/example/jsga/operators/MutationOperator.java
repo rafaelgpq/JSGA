@@ -5,24 +5,41 @@ import org.example.jsga.model.Population;
 import org.example.jsga.util.RandomUtils;
 
 /**
- * Performs mutation on a given population using a bitwise mutation strategy.
- * This is a direct translation of GAucsd's mutate.c.
+ * Performs mutation on a given population using a bitwise mutation strategy,
+ * with optional adaptive mutation.
+ * This extends GAucsd's mutate.c logic.
  */
 public class MutationOperator {
 
-    private final double mutationRate;
+    private final double baseMutationRate;
     private final int chromosomeLength;
     private final int populationSize;
     private long muNext = 0;
     private boolean firstCall = true;
 
-    public MutationOperator(double mutationRate, int chromosomeLength, int populationSize) {
-        this.mutationRate = mutationRate;
-        this.chromosomeLength = chromosomeLength;
-        this.populationSize = populationSize;
+    private boolean adaptiveEnabled;
+    private double adaptiveFactor = 1.5; // Multiplier for adaptive adjustment
+
+    public MutationOperator(double baseMutationRate, int chromosomeLength, int populationSize) {
+        this(baseMutationRate, chromosomeLength, populationSize, false);
     }
 
-    public void mutate(Population population) {
+    public MutationOperator(double baseMutationRate, int chromosomeLength, int populationSize, boolean adaptiveEnabled) {
+        this.baseMutationRate = baseMutationRate;
+        this.chromosomeLength = chromosomeLength;
+        this.populationSize = populationSize;
+        this.adaptiveEnabled = adaptiveEnabled;
+    }
+
+    public void mutate(Population population, int generation, int maxGenerations) {
+        double mutationRate = baseMutationRate;
+
+        if (adaptiveEnabled) {
+            // Adjust mutation rate based on progress through generations
+            double progress = (double) generation / maxGenerations;
+            mutationRate = baseMutationRate * (1 + adaptiveFactor * progress);
+        }
+
         long totalBits = (long) populationSize * chromosomeLength;
 
         if (firstCall) {
@@ -55,5 +72,9 @@ public class MutationOperator {
         muNext -= totalBits;
     }
 
-    // You may wish to reset muNext or seed the random generator in tests
+    // Optional: Reset for new runs
+    public void reset() {
+        muNext = 0;
+        firstCall = true;
+    }
 }

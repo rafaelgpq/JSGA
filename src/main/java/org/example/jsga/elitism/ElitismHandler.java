@@ -1,4 +1,4 @@
-package org.example.jsga.operators;
+package org.example.jsga.elitism;
 
 import org.example.jsga.model.Individual;
 import org.example.jsga.model.Population;
@@ -8,10 +8,22 @@ import java.util.Arrays;
 /**
  * Ensures the best individual survives into the new generation.
  */
-public class ElitistOperator {
+public class ElitismHandler {
 
-    public void apply(Population oldPopulation, Population newPopulation, int bestIndex) {
-        Individual elite = oldPopulation.get(bestIndex);
+    private final boolean enabled;
+
+    public ElitismHandler(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void apply(Population oldPopulation, Population newPopulation) {
+        if (oldPopulation == null || oldPopulation.size() == 0) return;
+
+        Individual elite = oldPopulation.get(0); // Assumes population is sorted or best is at index 0
         byte[] eliteGene = elite.getGene();
 
         boolean found = false;

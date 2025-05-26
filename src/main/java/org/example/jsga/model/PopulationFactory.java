@@ -3,14 +3,7 @@ package org.example.jsga.model;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Factory class for creating new populations.
- */
 public class PopulationFactory {
-
-    /**
-     * Creates a new SimplePopulation with given size and gene length.
-     */
     public static Population create(int size, int geneLength) {
         List<Individual> individuals = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
@@ -20,9 +13,6 @@ public class PopulationFactory {
         return new SimplePopulation(individuals);
     }
 
-    /**
-     * Creates a deep copy of an existing population.
-     */
     public static Population copy(Population original) {
         List<Individual> clones = new ArrayList<>(original.size());
         for (Individual ind : original.getAll()) {
@@ -31,4 +21,3 @@ public class PopulationFactory {
         return new SimplePopulation(clones);
     }
 }
-

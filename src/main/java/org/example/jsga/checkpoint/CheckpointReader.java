@@ -2,6 +2,8 @@ package org.example.jsga.checkpoint;
 
 import org.example.jsga.model.Individual;
 import org.example.jsga.model.Population;
+import org.example.jsga.model.SimpleIndividual;
+import org.example.jsga.model.SimplePopulation;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -19,11 +21,13 @@ public class CheckpointReader {
             String line;
             List<Individual> individuals = new ArrayList<>();
 
+            // Skip to the "Population:" section
             while ((line = reader.readLine()) != null) {
                 if (line.trim().equals("Population:")) break;
             }
 
-            for (int i = 0; i < populationSize && (line = reader.readLine()) != null; i++) {
+            // Read individuals
+            for (int i = 0; i < populationSize && (line = reader.readLine()) != null; ) {
                 line = line.trim();
                 if (line.isEmpty()) continue;
 
@@ -33,10 +37,14 @@ public class CheckpointReader {
                 boolean needsEval = parts.length > 2 && parts[2].equals("1");
 
                 byte[] gene = packBits(bitString);
-                Individual individual = new SimpleIndividual(gene, geneLength);
+                SimpleIndividual individual = new SimpleIndividual(gene, geneLength);
+                individual.setGene(gene);
+                individual.setGeneLength(geneLength);
                 individual.setFitness(fitness);
                 individual.setNeedsEvaluation(needsEval);
+
                 individuals.add(individual);
+                i++;
             }
 
             return new SimplePopulation(individuals);
@@ -52,65 +60,5 @@ public class CheckpointReader {
             }
         }
         return packed;
-    }
-
-    // Simple implementation placeholders below:
-    public static class SimpleIndividual implements Individual {
-        private byte[] gene;
-        private final int length;
-        private double fitness;
-        private boolean needsEvaluation = true;
-
-        public SimpleIndividual(byte[] gene, int length) {
-            this.gene = gene;
-            this.length = length;
-        }
-
-        @Override public byte[] getGene() { return gene; }
-        @Override public void setGene(byte[] gene) { this.gene = gene; }
-        @Override public double getFitness() { return fitness; }
-        @Override public void setFitness(double value) { this.fitness = value; }
-        @Override public boolean needsEvaluation() { return needsEvaluation; }
-        @Override public void setNeedsEvaluation(boolean value) { this.needsEvaluation = value; }
-        @Override public int getGeneLength() { return length; }
-        @Override public void flipBit(int index) {
-            int byteIdx = index / 8, bitIdx = index % 8;
-            gene[byteIdx] ^= (1 << bitIdx);
-        }
-        @Override public Individual clone() {
-            byte[] clonedGene = gene.clone();
-            SimpleIndividual clone = new SimpleIndividual(clonedGene, length);
-            clone.setFitness(fitness);
-            clone.setNeedsEvaluation(needsEvaluation);
-            return clone;
-        }
-    }
-
-    public static class SimplePopulation implements Population {
-        private final List<Individual> individuals;
-
-        public SimplePopulation(List<Individual> individuals) {
-            this.individuals = individuals;
-        }
-
-        @Override public int size() { return individuals.size(); }
-        @Override public Individual get(int index) { return individuals.get(index); }
-        @Override public List<Individual> getAll() { return individuals; }
-
-        @Override
-        public void markAllForEvaluation() {
-            for (Individual ind : individuals) ind.setNeedsEvaluation(true);
-        }
-
-        @Override
-        public void swapWith(Population other) {
-            if (other instanceof SimplePopulation) {
-                List<Individual> tmp = new ArrayList<>(this.individuals);
-                this.individuals.clear();
-                this.individuals.addAll(((SimplePopulation) other).individuals);
-                ((SimplePopulation) other).individuals.clear();
-                ((SimplePopulation) other).individuals.addAll(tmp);
-            }
-        }
     }
 }

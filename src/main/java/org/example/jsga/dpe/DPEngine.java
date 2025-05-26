@@ -1,4 +1,4 @@
-package org.example.jsga.operators;
+package org.example.jsga.dpe;
 
 import org.example.jsga.model.Individual;
 import org.example.jsga.model.Population;

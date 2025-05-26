@@ -1,4 +1,4 @@
-package org.example.jsga.operators;
+package org.example.jsga.core;
 
 import org.example.jsga.model.Population;
 
@@ -11,7 +11,7 @@ public interface GeneticOperators {
 
     void select(Population from, Population to);
 
-    void mutate(Population population);
+    void mutate(Population population, int generation, int maxGenerations);
 
     void crossover(Population population);
 

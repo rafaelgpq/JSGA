@@ -1,13 +1,11 @@
 package org.example.jsga.selection;
 
-import java.util.Random;
+import org.example.jsga.util.RandomUtils;
 
 /**
  * Handles population replacement when Gapsize < 1.0.
  */
 public class GapHandler {
-
-    private final Random random = new Random();
 
     /**
      * Adjusts the sample array based on the gap size.
@@ -18,7 +16,7 @@ public class GapHandler {
     public void applyGap(int[] sample, double gapsize, int popSize) {
         // Shuffle sample[]
         for (int i = 0; i < popSize; i++) {
-            int j = i + random.nextInt(popSize - i);
+            int j = i + RandomUtils.randint(popSize - i);
             int temp = sample[i];
             sample[i] = sample[j];
             sample[j] = temp;
@@ -30,7 +28,7 @@ public class GapHandler {
             survivors[i] = i;
         }
         for (int i = 0; i < popSize; i++) {
-            int j = i + random.nextInt(popSize - i);
+            int j = i + RandomUtils.randint(popSize - i);
             int temp = survivors[i];
             survivors[i] = survivors[j];
             survivors[j] = temp;

@@ -8,11 +8,11 @@ import java.util.Random;
 /**
  * Initializes a population with random genes.
  */
-public class Initializer {
+public class RandomInitializer implements PopulationInitializer {
 
     private final Random random;
 
-    public Initializer(long seed) {
+    public RandomInitializer(long seed) {
         this.random = new Random(seed);
     }
 
