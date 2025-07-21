@@ -107,7 +107,7 @@ public class DPEngine {
                     gene[focus] &= ~(1 << bitTail);
                     gene[focus] |= twoBits & (1 << bitTail);
 
-                    if (RandomUtils.rand() < 0.5) gene[focus] ^= (1 << bitTail);
+                    if (RandomUtils.nextDouble() < 0.5) gene[focus] ^= (1 << bitTail);
                     ind.setNeedsEvaluation(true);
                 }
 

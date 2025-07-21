@@ -16,7 +16,7 @@ public class GapHandler {
     public void applyGap(int[] sample, double gapsize, int popSize) {
         // Shuffle sample[]
         for (int i = 0; i < popSize; i++) {
-            int j = i + RandomUtils.randint(popSize - i);
+            int j = i + RandomUtils.nextInt(popSize - i);
             int temp = sample[i];
             sample[i] = sample[j];
             sample[j] = temp;
@@ -28,7 +28,7 @@ public class GapHandler {
             survivors[i] = i;
         }
         for (int i = 0; i < popSize; i++) {
-            int j = i + RandomUtils.randint(popSize - i);
+            int j = i + RandomUtils.nextInt(popSize - i);
             int temp = survivors[i];
             survivors[i] = survivors[j];
             survivors[j] = temp;

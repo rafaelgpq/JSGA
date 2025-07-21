@@ -34,7 +34,7 @@ public class FitnessSharingStrategy implements DiversityStrategy {
     }
 
     private double sharingFunction(int distance) {
-        double alpha = 1.0; // You can configure this as needed
+        double alpha = 1.0;
         if (distance < nicheRadius) {
             return 1.0 - Math.pow(distance / nicheRadius, alpha);
         } else {

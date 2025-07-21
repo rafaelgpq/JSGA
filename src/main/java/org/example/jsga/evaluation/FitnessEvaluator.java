@@ -32,7 +32,7 @@
 
         public void evaluate(Population population) {
             List<Individual> individuals = population.getAll();
-            int geneLength = individuals.get(0).getGeneLength(); // Assume uniform length
+            int geneLength = individuals.get(0).getGeneLength();
             double dynamicNicheRadius = nicheRadius * geneLength;
 
             for (Individual ind : individuals) {

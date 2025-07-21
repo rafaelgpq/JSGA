@@ -23,7 +23,7 @@ public class RandomImmigrantsStrategy implements DiversityStrategy {
     public void apply(Population nextGen, int generation) {
         List<Individual> individuals = nextGen.getAll();
         for (int i = 0; i < count; i++) {
-            int index = RandomUtils.randint(individuals.size());
+            int index = RandomUtils.nextInt(individuals.size());
             Individual randomIndividual = PopulationFactory.create(geneLength, geneLength).get(0); // Creating one random individual
             individuals.set(index, randomIndividual);
             System.out.println("[JSGA][Diversity][RandomImmigrants] Injected at index " + index + " in generation " + generation);

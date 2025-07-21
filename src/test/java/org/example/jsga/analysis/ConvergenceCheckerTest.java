@@ -18,7 +18,7 @@ class ConvergenceCheckerTest {
         byte[] gene3 = {(byte) 0b10000010}; // 1 at bit 0 and bit 6
         Population population = SimplePopulationMaker.createPopulationWithGenes(List.of(gene1, gene2, gene3));
 
-        ConvergenceChecker checker = new ConvergenceChecker(8, 1, true);
+        ConvergenceChecker checker = new ConvergenceChecker(8, 1, true, 5);
         checker.analyze(population);
 
         assertThat(checker.getLostBits()).isEqualTo(1);  // Only bit 0 is fully converged
@@ -31,7 +31,7 @@ class ConvergenceCheckerTest {
         byte[] gene = {(byte) 0b11111111}; // All bits 1
         Population population = SimplePopulationMaker.createPopulationWithGenes(List.of(gene, gene, gene));
 
-        ConvergenceChecker checker = new ConvergenceChecker(8, 1, true);
+        ConvergenceChecker checker = new ConvergenceChecker(8, 1, true, 5);
         checker.analyze(population);
 
         assertThat(checker.getLostBits()).isEqualTo(8); // All bits converged
@@ -45,7 +45,7 @@ class ConvergenceCheckerTest {
         byte[] gene2 = {(byte) 0b11111111};
         Population population = SimplePopulationMaker.createPopulationWithGenes(List.of(gene1, gene2));
 
-        ConvergenceChecker checker = new ConvergenceChecker(8, 1, true);
+        ConvergenceChecker checker = new ConvergenceChecker(8, 1, true, 5);
         checker.analyze(population);
 
         assertThat(checker.getLostBits()).isEqualTo(0); // No bits fully converged
@@ -58,7 +58,7 @@ class ConvergenceCheckerTest {
         byte[] gene = {(byte) 0b11111111};
         Population population = SimplePopulationMaker.createPopulationWithGenes(List.of(gene, gene));
 
-        ConvergenceChecker checker = new ConvergenceChecker(8, 1, false);
+        ConvergenceChecker checker = new ConvergenceChecker(8, 1, false, 5);
         checker.analyze(population);
 
         assertThat(checker.getLostBits()).isEqualTo(0);
@@ -69,7 +69,7 @@ class ConvergenceCheckerTest {
     @Test
     void analyze_ShouldHandleEdgeCases() {
         // Edge case: Empty population
-        ConvergenceChecker checker = new ConvergenceChecker(8, 1, true);
+        ConvergenceChecker checker = new ConvergenceChecker(8, 1, true, 5);
         Population emptyPopulation = SimplePopulationMaker.createPopulationWithGenes(List.of());
         checker.analyze(emptyPopulation);
         assertThat(checker.getLostBits()).isEqualTo(0);
@@ -79,7 +79,7 @@ class ConvergenceCheckerTest {
         // Edge case: Large gene length
         byte[] largeGene = new byte[16]; // 128 bits, all 0
         Population largeGenePopulation = SimplePopulationMaker.createPopulationWithGenes(List.of(largeGene, largeGene));
-        ConvergenceChecker largeChecker = new ConvergenceChecker(128, 1, true);
+        ConvergenceChecker largeChecker = new ConvergenceChecker(128, 1, true, 5);
         largeChecker.analyze(largeGenePopulation);
         assertThat(largeChecker.getLostBits()).isEqualTo(128);
     }

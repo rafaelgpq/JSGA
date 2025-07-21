@@ -14,16 +14,20 @@ public class RandomUtils {
         globalRandom = new Random(seed);
     }
 
-    public static int randint(int bound) {
+    public static int nextInt(int bound) {
         return globalRandom.nextInt(bound);
     }
 
-    public static double rand() {
+    public static double nextDouble() {
         return globalRandom.nextDouble();
     }
 
     public static boolean coinFlip(double probability) {
         return globalRandom.nextDouble() < probability;
+    }
+
+    public static double nextGaussian() {
+        return globalRandom.nextGaussian();
     }
 
     public static Random getInstance() {

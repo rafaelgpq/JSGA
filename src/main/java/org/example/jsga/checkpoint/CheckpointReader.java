@@ -56,7 +56,7 @@ public class CheckpointReader {
         byte[] packed = new byte[byteLen];
         for (int i = 0; i < bitString.length(); i++) {
             if (bitString.charAt(i) == '1') {
-                packed[i / 8] |= (1 << (i % 8));
+                packed[i / 8] |= (byte) (1 << (i % 8));
             }
         }
         return packed;

@@ -8,6 +8,8 @@ import java.util.List;
 public interface Population {
     int size();
     Individual get(int index);
+    Individual getBestIndividual();
+    void set(int index, Individual individual);
     void markAllForEvaluation();
     void swapWith(Population other);
     List<Individual> getAll();
