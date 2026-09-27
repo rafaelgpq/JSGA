@@ -192,7 +192,6 @@ public class FlagConfigurator {
             getDouble("schema.worst_fitness", 0.0);
         }
         getBoolean("termination.done.enabled", Constants.DEFAULT_DONE_TERMINATION_ENABLED);
-        getBoolean("termination.convergence.enabled", false);
         requireIntRange("termination.stagnation.generations",
                 getInt("termination.stagnation.generations", Constants.DEFAULT_STAGNATION_GENERATIONS),
                 value -> value >= 0, "must not be negative");

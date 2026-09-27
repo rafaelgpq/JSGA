@@ -1,5 +1,7 @@
 # JSGA — A Modern Java Genetic Algorithm Framework
 
+[![Build Status](https://github.com/rafaelgpq/JSGA/actions/workflows/ci.yml/badge.svg)](https://github.com/rafaelgpq/JSGA/actions/workflows/ci.yml)
+
 **JSGA** ("Java Simple Genetic Algorithm") is a faithful, well-tested Java port
 and modernization of **GAucsd 1.4**, the classic C genetic algorithm toolkit
 written by John Grefenstette and later maintained by Nicol Schraudolph at
@@ -15,10 +17,9 @@ modern JVM project can embed, extend, or learn from.
 
 - **Battle-tested algorithms, modern engineering.** Every GAucsd behavior
   (gap sizing, tournament fractions, adaptive mutation, Gray-coded DPE
-  segments, GAucsd-compatible checkpoint binary layout, `report.c`-style
-  output columns) was cross-checked against the original C source and is
-  covered by regression tests — so you get decades-proven GA theory without
-  inheriting 1990s C quirks.
+  segments, `report.c`-style output columns) was cross-checked against the
+  original C source and is covered by regression tests — so you get
+  decades-proven GA theory without inheriting 1990s C quirks.
 - **Batteries included.** 15 ready-to-run example problems (see
   [docs/PROBLEM_GUIDE.md](docs/PROBLEM_GUIDE.md)) show OneMax, Knapsack, TSP,
   Graph Coloring, Continuous Optimization, N-Queens, Job-Shop Scheduling,
@@ -26,10 +27,14 @@ modern JVM project can embed, extend, or learn from.
   Selection, Symbolic Regression, and Neural-Network weight training —
   solved end-to-end with JSGA, with clear, adaptable code for your own
   problems.
-- **Two APIs, one engine.** Use the modern, generic `OptimizationProblem<S>`
-  interface to plug in *any* solution representation (bit strings,
-  permutations, real vectors, trees) in a few methods — or drive the classic
-  GAucsd-parity `MainSimulator` from a `.properties` file with no code at all.
+- **Two APIs, two engines (for now).** Use the modern, generic
+  `OptimizationProblem<S>` interface with the lightweight `GeneticAlgorithm`
+  engine to plug in *any* solution representation (bit strings, permutations,
+  real vectors, trees) in a few methods — or drive the classic GAucsd-parity
+  `MainSimulator` from a `.properties` file with no code at all. These are
+  currently two independent evolutionary loops (`optimization.GeneticAlgorithm`
+  and `MainSimulator`); unifying them behind one reusable engine is tracked as
+  follow-up work.
 - **Production-friendly.** Deterministic seeded execution, checkpoint/restart
   for long runs, optional diversity strategies (random immigrants, crowding,
   island migration, fitness sharing) to fight premature convergence, schema
@@ -252,14 +257,16 @@ verified against the original C source and covered by unit tests:
 | 1 | Configuration & initialization | `global.h`, `define.h`, `format.h`, `init.c`, `generate.c`, `setflag.c`, `input.c` | `config`, `init`, `util.InputPrinter` |
 | 2 | Core GA loop & elitism | `main.c`, `evaluate.c`, `elitist.c`, `best.c`, `checkpt.c`, `restart.c` | `MainSimulator`, `elitism`, `checkpoint`, `evaluation`, `track` |
 | 3 | Genetic operators | `cross.c`, `mutate.c` | `recombine.crossover`, `recombine.mutation`, `core.Recombination` |
-| 4 | Selection & diversity | `select.c`, `gap.c`, `measure.c`, `schema.c` | `selection`, `core.GapHandler`, `measure`, `schema`, `diversity` |
+| 4 | Selection & diversity | `select.c`, `gap.c`, `measure.c`, `schema.c` | `selection` (including `selection.GapHandler`), `measure`, `schema`, `diversity` |
 | 5 | Advanced features | `dpe.c`, `random.c`, `decode.c`/`encode.c`, `report.c`, `converge.c`, `done.c` | `dpe`, `util.RandomUtils`, `util.DecodeUtils`/`EncodeUtils`, `report`, `analysis.ConvergenceChecker`, `core.DoneChecker` |
 
 The reusable `optimization` package (the `OptimizationProblem<S>`/
 `GeneticAlgorithm` API and the 15 example problems) is a JSGA-native addition
-built on top of this ported core, showing the same engine solving problems
-GAucsd itself never targeted — permutations, trees, and real-valued vectors —
-without any C equivalent to port from.
+built on top of this ported core. It is a separate, independent evolutionary
+loop from `MainSimulator` — not the same engine — that reuses the same GA
+theory to solve problems GAucsd itself never targeted — permutations, trees,
+and real-valued vectors — without any C equivalent to port from. Unifying
+both loops behind one shared engine is planned follow-up work.
 
 ## Learn more
 
