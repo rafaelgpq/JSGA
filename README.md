@@ -41,7 +41,7 @@ modern JVM project can embed, extend, or learn from.
   analysis for research, and a report pipeline for tracking convergence over
   time.
 - **Extensively tested.** 250+ JUnit 5 tests, ~98% line and ~90% branch
-  coverage (see `mvn verify` below), including small-instance
+  coverage (see `./mvnw verify` below), including small-instance
   exhaustive-search verification for every bundled example problem.
 - **Approachable by design.** Clear package boundaries
   (`config`, `core`, `selection`, `recombine`, `diversity`, `dpe`,
@@ -71,7 +71,7 @@ a note on GAucsd's own (informal, non-SPDX) distribution terms.
 Run with the default `jsga.properties` file, or pass a properties-file path:
 
 ```sh
-mvn package
+./mvnw package
 java -cp target/jsga-1.0-SNAPSHOT.jar com.rafaelgpq.jsga.MainSimulator path/to/config.properties
 ```
 
@@ -192,8 +192,8 @@ global optimum; production instances should be supplied with domain-specific
 data and tuned settings. Verify the included small instances with:
 
 ```sh
-mvn -Dtest=ProblemCatalogVerificationTest,OptimizationProblemsTest test
-mvn package
+./mvnw -Dtest=ProblemCatalogVerificationTest,OptimizationProblemsTest test
+./mvnw package
 java -cp target/jsga-1.0-SNAPSHOT.jar com.rafaelgpq.jsga.optimization.ProblemDemoMain all \
   --generations 150 --seed 12345
 ```
@@ -210,7 +210,7 @@ statistical robustness on other seeds or real-world instances.
 Generate the JaCoCo test coverage report with:
 
 ```sh
-mvn verify
+./mvnw verify
 ```
 
 The HTML report is written to `target/site/jacoco/index.html`; XML coverage
@@ -274,7 +274,7 @@ both loops behind one shared engine is planned follow-up work.
   the 15 bundled example problems: how to run them, how to read and tune
   every parameter, how to reproduce experiments, and how to plug in your own
   problem using the same API.
-- Run `mvn test` to execute the full JUnit 5 suite, or `mvn verify` for tests
+- Run `./mvnw test` to execute the full JUnit 5 suite, or `./mvnw verify` for tests
   plus a JaCoCo coverage report.
 - Every package under `src/main/java/com/rafaelgpq/jsga` has a matching test
   package under `src/test/java/com/rafaelgpq/jsga` — reading the tests

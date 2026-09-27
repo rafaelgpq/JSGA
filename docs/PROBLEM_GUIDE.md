@@ -50,7 +50,7 @@ that the examples are ready-made production solvers.
 From the repository root, build the project and run one example:
 
 ```sh
-mvn package
+./mvnw package
 java -cp target/jsga-1.0-SNAPSHOT.jar com.rafaelgpq.jsga.optimization.ProblemDemoMain onemax
 ```
 
@@ -232,8 +232,8 @@ OptimizationResult<List<Integer>> result = new GeneticAlgorithm().solve(tsp,
 Reproduce the shipped small-instance checks and the full unit test suite with:
 
 ```sh
-mvn -Dtest=ProblemCatalogVerificationTest,OptimizationProblemsTest test
-mvn test
+./mvnw -Dtest=ProblemCatalogVerificationTest,OptimizationProblemsTest test
+./mvnw test
 ```
 
 `ProblemCatalogVerificationTest` compares the fixed-seed demo results with
