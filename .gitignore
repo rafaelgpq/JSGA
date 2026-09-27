@@ -2,24 +2,13 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-<<<<<<< HEAD
 *.log
-=======
->>>>>>> b3db121 (Initial commit - jsga-project Maven structure)
 
 ### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
-<<<<<<< HEAD
 .idea/
-=======
->>>>>>> b3db121 (Initial commit - jsga-project Maven structure)
 *.iws
 *.iml
 *.ipr
-*.log
 *.class
 
 ### Eclipse ###
@@ -45,8 +34,4 @@ build/
 .vscode/
 
 ### Mac OS ###
-<<<<<<< HEAD
 .DS_Store
-=======
-.DS_Store
->>>>>>> b3db121 (Initial commit - jsga-project Maven structure)
